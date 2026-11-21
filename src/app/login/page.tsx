@@ -44,11 +44,11 @@ export default function SuperAdminLoginPage() {
       <div className="w-full max-w-md bg-[#121215] border border-zinc-800/80 rounded-2xl p-8 shadow-2xl relative z-10">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="w-14 h-14 rounded-2xl bg-red-600 flex items-center justify-center text-white mx-auto mb-4 shadow-xl shadow-red-600/30">
-            <ShieldAlert className="w-8 h-8" />
+          <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-zinc-750 flex items-center justify-center p-2 mx-auto mb-4 shadow-xl shadow-red-600/10">
+            <img src="/logo.png" alt="Divinesoft GYM Logo" className="w-full h-full object-contain" />
           </div>
           <h1 className="text-2xl font-black text-white tracking-tight">
-            IRON MAN SAAS
+            DIVINESOFT GYM
           </h1>
           <p className="text-xs uppercase font-bold text-red-500 tracking-widest mt-1">
             SuperAdmin Command Console

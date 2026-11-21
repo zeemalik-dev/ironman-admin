@@ -11,6 +11,7 @@ import {
   CreditCard,
   LogOut,
   X,
+  Plus,
 } from 'lucide-react';
 import { useAdminLogoutMutation } from '../redux/baseApi';
 import { useDispatch } from 'react-redux';
@@ -61,15 +62,15 @@ export function AdminSidebar({ isOpen = false, onClose }: AdminSidebarProps) {
             onClick={() => onClose?.()}
             className="flex items-center gap-3 hover:opacity-90 transition min-w-0"
           >
-            <div className="w-10 h-10 rounded-xl bg-red-600 flex items-center justify-center text-white font-black shadow-lg shadow-red-600/30 flex-shrink-0">
-              <ShieldAlert className="w-6 h-6" />
+            <div className="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-750 flex items-center justify-center p-1.5 shadow-md flex-shrink-0">
+              <img src="/logo.png" alt="Divinesoft Logo" className="w-full h-full object-contain" />
             </div>
             <div className="truncate">
               <h1 className="text-base font-extrabold text-white tracking-tight leading-none">
-                IRON MAN
+                DIVINESOFT
               </h1>
               <p className="text-[10px] uppercase font-bold text-red-500 tracking-wider mt-1">
-                SuperAdmin SaaS
+                GYM SuperAdmin
               </p>
             </div>
           </Link>
@@ -106,6 +107,21 @@ export function AdminSidebar({ isOpen = false, onClose }: AdminSidebarProps) {
             );
           })}
         </nav>
+
+        {/* Dedicated Add New Gym Action */}
+        <div className="pt-3">
+          <Link
+            href="/gyms/new"
+            onClick={() => onClose?.()}
+            className={`w-full flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-150 cursor-pointer ${
+              pathname === '/gyms/new'
+                ? 'bg-red-600 text-white shadow-lg shadow-red-600/30'
+                : 'bg-red-600/15 hover:bg-red-600 text-red-400 hover:text-white border border-red-500/30'
+            }`}
+          >
+            <Plus className="w-4 h-4" /> Add New Gym
+          </Link>
+        </div>
       </div>
 
       {/* User & Logout section */}

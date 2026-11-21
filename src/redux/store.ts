@@ -7,6 +7,7 @@ import authReducer from './authSlice';
 export const store = configureStore({
   reducer: {
     [baseApi.reducerPath]: baseApi.reducer,
+    adminAuth: authReducer,
     auth: authReducer,
   },
   middleware: (getDefaultMiddleware) =>

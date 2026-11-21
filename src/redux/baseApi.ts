@@ -90,6 +90,48 @@ export const baseApi = createApi({
         body: formData,
       }),
     }),
+
+    // Gym Real-time Telemetry (Active members, attendance today, cash closing)
+    getGymTelemetry: builder.query({
+      query: (id) => `/gyms/${id}/telemetry`,
+      providesTags: (result, error, id) => [{ type: 'Gyms', id: `telemetry-${id}` }],
+    }),
+
+    // SuperAdmin User & Staff Management
+    resetUserPassword: builder.mutation({
+      query: ({ gymId, ...body }) => ({
+        url: `/gyms/${gymId}/reset-user-password`,
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: (result, error, { gymId }) => [{ type: 'Gyms', id: gymId }],
+    }),
+    updateUserStatus: builder.mutation({
+      query: ({ gymId, userId, ...body }) => ({
+        url: `/gyms/${gymId}/users/${userId}/status`,
+        method: 'PATCH',
+        body,
+      }),
+      invalidatesTags: (result, error, { gymId }) => [{ type: 'Gyms', id: gymId }],
+    }),
+    createStaffUser: builder.mutation({
+      query: ({ gymId, ...body }) => ({
+        url: `/gyms/${gymId}/staff`,
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: (result, error, { gymId }) => [{ type: 'Gyms', id: gymId }],
+    }),
+    lookupUser: builder.query({
+      query: (email) => `/gyms/users/lookup?email=${encodeURIComponent(email)}`,
+    }),
+    deleteUserByEmail: builder.mutation({
+      query: (email) => ({
+        url: `/gyms/users/by-email/${encodeURIComponent(email)}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Gyms'],
+    }),
   }),
 });
 
@@ -104,4 +146,10 @@ export const {
   useUpdateGymMutation,
   useDeleteGymMutation,
   useUploadImageMutation,
+  useGetGymTelemetryQuery,
+  useResetUserPasswordMutation,
+  useUpdateUserStatusMutation,
+  useCreateStaffUserMutation,
+  useLazyLookupUserQuery,
+  useDeleteUserByEmailMutation,
 } = baseApi;

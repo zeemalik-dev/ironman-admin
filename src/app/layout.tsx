@@ -4,8 +4,19 @@ import { ReduxProvider } from '../redux/ReduxProvider';
 import { Toaster } from 'sonner';
 
 export const metadata: Metadata = {
-  title: 'Iron Man Gym — SuperAdmin Console',
-  description: 'Multi-Tenant SaaS Fleet Management & Analytics Command Center',
+  title: 'Divinesoft GYM — SuperAdmin Console',
+  description: 'Multi-Tenant SaaS Fleet Management & Analytics Command Center powered by Divinesoft GYM',
+  icons: {
+    icon: [
+      { url: '/logo.png', sizes: 'any' },
+      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    shortcut: '/logo.png',
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+  },
 };
 
 export default function RootLayout({

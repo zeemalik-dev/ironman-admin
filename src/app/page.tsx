@@ -1,8 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { AdminLayoutShell } from '../components/AdminLayoutShell';
+import { GymInspectorDrawer } from '../components/GymInspectorDrawer';
 import { useGetPlatformStatsQuery } from '../redux/baseApi';
 import {
   Building2,
@@ -18,7 +19,8 @@ import {
 import { formatCurrency, formatDate } from '../lib/utils';
 
 export default function SuperAdminDashboardPage() {
-  const { data: statsData, isLoading } = useGetPlatformStatsQuery({}, { pollingInterval: 10000 });
+  const [selectedGymId, setSelectedGymId] = useState<string | null>(null);
+  const { data: statsData, isLoading, refetch } = useGetPlatformStatsQuery({}, { pollingInterval: 10000 });
 
   const metrics = statsData?.metrics || {
     totalGyms: 0,
@@ -48,10 +50,10 @@ export default function SuperAdminDashboardPage() {
 
         <div className="flex items-center gap-3">
           <Link
-            href="/gyms"
+            href="/gyms/new"
             className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-red-600/30 transition cursor-pointer"
           >
-            <Plus className="w-4 h-4" /> Provision New Gym
+            <Plus className="w-4 h-4" /> Add New Gym
           </Link>
         </div>
       </div>
@@ -111,7 +113,7 @@ export default function SuperAdminDashboardPage() {
       <div className="mt-8 bg-[#121215] border border-zinc-800/80 rounded-2xl p-6 shadow-xl">
         <div className="flex items-center justify-between mb-5">
           <h3 className="text-lg font-bold text-white flex items-center gap-2">
-            <Building2 className="w-5 h-5 text-red-500" /> Recently Provisioned Gym Accounts
+            <Building2 className="w-5 h-5 text-red-500" /> Recently Added Gym Accounts
           </h3>
           <Link
             href="/gyms"
@@ -131,12 +133,14 @@ export default function SuperAdminDashboardPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {statsData?.recentGyms?.map((gym: any) => (
-              <div
+              <button
                 key={gym._id}
-                className="bg-zinc-900/60 border border-zinc-800 rounded-xl p-4 hover:border-zinc-700 transition"
+                type="button"
+                onClick={() => setSelectedGymId(gym._id)}
+                className="bg-zinc-900/60 border border-zinc-800 rounded-xl p-4 hover:border-red-500/50 hover:bg-zinc-900/90 transition text-left w-full group cursor-pointer focus:outline-none"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-zinc-950 border border-zinc-750 flex items-center justify-center overflow-hidden flex-shrink-0 font-bold text-red-400">
+                  <div className="w-10 h-10 rounded-lg bg-zinc-950 border border-zinc-750 flex items-center justify-center overflow-hidden flex-shrink-0 font-bold text-red-400 group-hover:scale-105 transition">
                     {gym.logoUrl ? (
                       <img src={gym.logoUrl} alt={gym.name} className="w-full h-full object-cover" />
                     ) : (
@@ -144,7 +148,7 @@ export default function SuperAdminDashboardPage() {
                     )}
                   </div>
                   <div className="truncate">
-                    <p className="font-bold text-sm text-zinc-100 truncate">{gym.name}</p>
+                    <p className="font-bold text-sm text-zinc-100 truncate group-hover:text-red-400 transition">{gym.name}</p>
                     <p className="text-[10px] font-mono text-zinc-400">{gym.branchCode}</p>
                   </div>
                 </div>
@@ -157,11 +161,19 @@ export default function SuperAdminDashboardPage() {
                     {formatCurrency(gym.mrrAmount, gym.currency)}/mo
                   </span>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
         )}
       </div>
+
+      {/* Quick Inspector Drawer */}
+      <GymInspectorDrawer
+        gymId={selectedGymId}
+        onClose={() => setSelectedGymId(null)}
+        onGymUpdated={refetch}
+        onGymDeleted={refetch}
+      />
     </AdminLayoutShell>
   );
 }
